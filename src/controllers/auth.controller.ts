@@ -53,7 +53,7 @@ export class AuthController {
     }
   }
 
-  static async refresh(req: UserRequest, res: Response, next: NextFunction) {
+  static async refresh(req: Request, res: Response, next: NextFunction) {
     try {
       const request = String(req.cookies.refreshToken);
       const response = await AuthServices.refresh(request);
