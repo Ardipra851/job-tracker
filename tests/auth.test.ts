@@ -4,6 +4,10 @@ import logger from "../src/applications/logging";
 import pool from "../src/applications/db";
 import bcrypt from "bcryptjs";
 
+afterAll(async () => {
+  pool.end();
+});
+
 describe("Register", () => {
   afterEach(async () => {
     await pool.execute("DELETE FROM users WHERE email = ?", [

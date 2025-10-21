@@ -56,6 +56,7 @@ export class AuthController {
   static async refresh(req: Request, res: Response, next: NextFunction) {
     try {
       const request = String(req.cookies.refreshToken);
+      logger.debug(request);
       const response = await AuthServices.refresh(request);
       res.cookie("refreshToken", response.refreshToken, {
         httpOnly: true,
