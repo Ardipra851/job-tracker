@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from "express";
 import { Login, Register } from "../models/auth.model";
 import { AuthServices } from "../services/auth.service";
 import { UserRequest } from "../models/user.request";
-import logger from "../applications/logging";
 
 export class AuthController {
   static async register(req: Request, res: Response, next: NextFunction) {
@@ -39,7 +38,6 @@ export class AuthController {
   static async logout(req: UserRequest, res: Response, next: NextFunction) {
     try {
       const userId = Number(req.user!.id);
-      logger.debug(userId);
       const response = await AuthServices.logout(userId);
       res.cookie("refreshToken", "", {
         httpOnly: true,
@@ -56,7 +54,6 @@ export class AuthController {
   static async refresh(req: Request, res: Response, next: NextFunction) {
     try {
       const request = String(req.cookies.refreshToken);
-      logger.debug(request);
       const response = await AuthServices.refresh(request);
       res.cookie("refreshToken", response.refreshToken, {
         httpOnly: true,

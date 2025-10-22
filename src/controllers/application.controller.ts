@@ -8,7 +8,6 @@ import {
 } from "../models/application.model";
 import { ApplicationService } from "../services/application.service";
 import { PaginationOption } from "../models/pagging.model";
-import logger from "../applications/logging";
 
 export class ApplicationController {
   static async create(req: UserRequest, res: Response, next: NextFunction) {
@@ -29,7 +28,6 @@ export class ApplicationController {
       const id: GetByIdRequest = {
         id: Number(req.params.id),
       };
-      // logger.debug(id);
       const response = await ApplicationService.getById(userId, id);
       res.status(200).json(response);
     } catch (error) {

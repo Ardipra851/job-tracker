@@ -1,6 +1,5 @@
 import request from "supertest";
 import app from "../src/applications/app";
-import logger from "../src/applications/logging";
 import pool from "../src/applications/db";
 import bcrypt from "bcryptjs";
 
@@ -21,7 +20,6 @@ describe("Register", () => {
       email: "8oV6I@example.com",
       password: "123456",
     });
-    logger.info(response.body);
     expect(response.status).toBe(201);
   });
 });
@@ -45,9 +43,6 @@ describe("Login", () => {
       email: "8oV6I@example.com",
       password: "123456",
     });
-    const refreshToken = response.headers["set-cookie"]?.[0]!.split(";")[0];
-    logger.info(refreshToken);
-    logger.info(response.body);
     expect(response.status).toBe(200);
   });
 });
@@ -71,7 +66,6 @@ describe("Logout", () => {
       email: "8oV6I@example.com",
       password: "123456",
     });
-    logger.info(login.body);
 
     const response = await request(app)
       .post("/api/auth/logout")
@@ -79,9 +73,6 @@ describe("Logout", () => {
         authorization: `Bearer ${login.body.token}`,
       })
       .send();
-    const cookie = response.headers["set-cookie"]?.[0]!.split(";")[0];
-    logger.info(cookie);
-    logger.info(response.body);
     expect(response.status).toBe(200);
   });
 });
@@ -106,15 +97,11 @@ describe("Refresh token", () => {
       password: "123456",
     });
     const oldToken = login.body.token;
-    logger.info(oldToken);
     const refresToken = login.headers["set-cookie"]?.[0]!.split(";")[0];
 
     const response = await request(app).post("/api/auth/refresh").set({
       cookie: refresToken,
     });
-    const newToken = response.body.token;
-    logger.info(newToken);
-    logger.debug(oldToken === newToken);
     expect(response.status).toBe(200);
   });
 });

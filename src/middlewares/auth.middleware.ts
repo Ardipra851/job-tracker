@@ -2,7 +2,6 @@ import { NextFunction, Response } from "express";
 import { UserRequest } from "../models/user.request";
 import { json } from "zod";
 import { JwtUtils } from "../utils/jwt.util";
-import logger from "../applications/logging";
 
 export class Auth {
   static authenticate(req: UserRequest, res: Response, next: NextFunction) {
@@ -37,7 +36,6 @@ export class Auth {
           error: "Unauthorized",
         });
       }
-      logger.info(`refreshToken: ${refreshToken}`);
       const user = JwtUtils.verifyRefreshToken(refreshToken as string);
       req.user = user;
       next();

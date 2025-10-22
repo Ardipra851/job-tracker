@@ -13,9 +13,6 @@ import { Validation } from "../validations/validate";
 import pool from "../applications/db";
 import { ResponseError } from "../errors/response.error";
 import { Pagination, PaginationOption } from "../models/pagging.model";
-import fs from "fs";
-import path from "path";
-import logger from "../applications/logging";
 import { deleteFileIfExist } from "../helper/delete-file";
 
 export class ApplicationService {
@@ -126,7 +123,7 @@ export class ApplicationService {
       params.push(filters.appliedAt);
     }
     // Query data (Utama)
-    let query = `SELECT companyName, position, status, appliedAt FROM job_applications WHERE userId = ?`;
+    let query = `SELECT id,companyName, position, status, appliedAt FROM job_applications WHERE userId = ?`;
 
     if (conditions.length > 0) {
       query += " AND " + conditions.join(" AND ");

@@ -12,7 +12,6 @@ import { UserValidation } from "../validations/auth.validation";
 import { Validation } from "../validations/validate";
 import { OkPacket, RowDataPacket } from "mysql2";
 import { JwtUtils } from "../utils/jwt.util";
-import logger from "../applications/logging";
 
 export class AuthServices {
   static async register(request: Register): Promise<AuthResponse> {
@@ -33,7 +32,6 @@ export class AuthServices {
       "INSERT INTO users (name, email, password) VALUES (?,?,?)",
       [validated.name, validated.email, hashedPassword]
     );
-    logger.info(result.insertId);
     const token = JwtUtils.generateToken({ id: result.insertId });
     const refreshToken = JwtUtils.generateRefreshToken({ id: result.insertId });
 
